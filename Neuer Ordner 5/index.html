@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FrischFix - Dein Wocheneinkauf in Minuten</title>
+
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root{
+      --primary:#E60026; /* Picnic-Rot */
+      --primary-600:#c0001f;
+      --ink:#212529;
+      --muted:#6c757d;
+      --bg:#f6f7f9;
+      --card:#ffffff;
+      --line:#e9ecef;
+      --radius:16px;
+      --radius-sm:12px;
+      --radius-lg:24px;
+      --shadow:0 6px 18px rgba(0,0,0,.06);
+      --shadow-sm:0 2px 8px rgba(0,0,0,.05);
+      --shadow-lg:0 14px 30px rgba(0,0,0,.08);
+      --font:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.6;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* Layout */
+    .container{max-width:1200px;margin:0 auto}
+
+    header{
+      position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);
+      box-shadow:var(--shadow-sm);
+    }
+    .bar{
+      display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 20px;
+    }
+    .brand{display:flex;align-items:center;gap:10px}
+    .brand-badge{
+      width:36px;height:36px;border-radius:10px;background:var(--primary);
+      display:grid;place-items:center;color:#fff;font-weight:800;letter-spacing:.5px;box-shadow:var(--shadow-sm)
+    }
+    .brand h1{font-size:1.4rem;margin:0}
+    .nav a{
+      text-decoration:none;color:var(--ink);font-weight:600;margin-left:18px;
+      padding:8px 12px;border-radius:999px;transition:background .2s ease;
+    }
+    .nav a:hover{background:#f2f3f5}
+
+    /* Hero */
+    .hero{
+      position:relative;height:300px;display:flex;align-items:center;justify-content:center;overflow:hidden;
+      border-radius:0 0 var(--radius-lg) var(--radius-lg);box-shadow:var(--shadow);
+      background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="300" viewBox="0 0 1600 300"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%23f9fafb"/><stop offset="1" stop-color="%23eef1f4"/></linearGradient></defs><rect width="1600" height="300" fill="url(%23g)"/><!-- blurred city blocks --><g opacity="0.35"><rect x="80" y="140" width="180" height="90" rx="10" fill="%23cfd6de"/><rect x="300" y="120" width="140" height="110" rx="10" fill="%23d7dde5"/><rect x="470" y="135" width="220" height="95" rx="10" fill="%23cfd6de"/><rect x="720" y="125" width="160" height="105" rx="10" fill="%23d7dde5"/><rect x="910" y="145" width="200" height="85" rx="10" fill="%23cfd6de"/><rect x="1140" y="130" width="170" height="100" rx="10" fill="%23d7dde5"/><rect x="1340" y="150" width="180" height="80" rx="10" fill="%23cfd6de"/></g><!-- ground --><rect y="230" width="1600" height="90" fill="%23e8ecf1"/><!-- e-scooter courier --><g transform="translate(420,70)"><!-- wheels --><circle cx="140" cy="170" r="26" fill="%231a1a1a"/><circle cx="270" cy="170" r="26" fill="%231a1a1a"/><circle cx="140" cy="170" r="13" fill="%23ffffff"/><circle cx="270" cy="170" r="13" fill="%23ffffff"/><!-- deck --><rect x="120" y="155" width="170" height="10" rx="5" fill="%2399a6b3"/><!-- stem --><rect x="280" y="105" width="8" height="55" rx="4" fill="%2399a6b3"/><rect x="280" y="105" width="46" height="8" rx="4" fill="%2399a6b3"/><!-- rider --><circle cx="200" cy="85" r="18" fill="%23868f99"/><rect x="180" y="100" width="60" height="40" rx="10" fill="%23868f99"/><rect x="190" y="135" width="18" height="35" rx="8" fill="%23868f99"/><rect x="212" y="135" width="18" height="35" rx="8" fill="%23868f99"/><!-- box --><rect x="115" y="95" width="56" height="44" rx="6" fill="%23E60026"/><text x="143" y="121" font-family="Inter, Arial" font-size="12" text-anchor="middle" fill="%23ffffff">FrischFix</text><!-- handle hand --><circle cx="305" cy="109" r="6" fill="%23868f99"/></g></svg>');
+      background-size:cover;background-position:center;
+    }
+    .hero-overlay{
+      position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.25));
+      display:flex;align-items:center;justify-content:center;padding:24px;
+    }
+    .hero-card{
+      width:min(820px,92%);background:rgba(0,0,0,.55);backdrop-filter:saturate(120%) blur(2px);
+      color:#fff;border-radius:18px;padding:24px 22px;box-shadow:var(--shadow-lg);
+      text-align:center;
+    }
+    .hero-card h2{margin:0 0 6px 0;font-size:2rem;font-weight:800;letter-spacing:.2px}
+    .hero-card p{margin:0 0 16px 0;font-size:1rem;opacity:.95}
+
+    .search{
+      display:flex;gap:10px;align-items:center;justify-content:center;margin:10px auto 6px auto;width:min(680px,100%);
+    }
+    .search input[type="search"]{
+      flex:1;padding:14px 16px;border:1px solid rgba(255,255,255,.5);
+      border-radius:999px;background:rgba(255,255,255,.96);color:#111;font-size:1rem;outline:none;
+      box-shadow:inset 0 1px 2px rgba(0,0,0,.06);
+    }
+    .btn, .btn-secondary{
+      border:0;border-radius:999px;padding:12px 18px;font-weight:700;cursor:pointer;
+      transition:transform .04s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .btn{background:var(--primary);color:#fff;box-shadow:0 6px 16px rgba(230,0,38,.25)}
+    .btn:hover{background:var(--primary-600)}
+    .btn:active{transform:translateY(1px)}
+    .btn-secondary{background:#ffffff;color:#111;border:1px solid var(--line)}
+    .btn-secondary:hover{background:#f6f6f7}
+
+    main{padding:28px 20px}
+    section{margin:0 auto 28px auto;width:min(1200px,100%)}
+
+    h2.section-title{
+      font-size:1.25rem;margin:10px 2px 14px 2px;font-weight:800;letter-spacing:.2px;
+      border-bottom:2px solid var(--line);padding-bottom:8px;
+    }
+
+    /* Product */
+    .product-grid{
+      display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
+    }
+    .card{
+      background:var(--card);border:1px solid var(--line);border-radius:var(--radius-sm);
+      box-shadow:var(--shadow-sm);padding:14px;display:flex;flex-direction:column;gap:10px;align-items:center;text-align:center;
+      transition:box-shadow .2s ease, transform .06s ease;
+    }
+    .card:hover{box-shadow:var(--shadow);transform:translateY(-1px)}
+    .card img{width:100%;height:140px;object-fit:contain;background:#fff;border-radius:12px}
+    .card h3{font-size:.98rem;margin:2px 0 2px 0}
+    .unit{color:var(--muted);font-size:.9rem;margin-top:-4px}
+    .price{font-weight:800;margin-top:2px}
+    .add{align-self:stretch;margin-top:6px}
+
+    /* Cart */
+    .table{width:100%;border-collapse:collapse;background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm)}
+    .table th,.table td{padding:12px;border-bottom:1px solid var(--line);text-align:left}
+    .table th{background:#fafbfc;font-weight:700}
+    .qty-btn{border:1px solid var(--line);width:28px;height:28px;border-radius:8px;background:#fff;cursor:pointer}
+    .cart-summary{display:flex;justify-content:flex-end;gap:16px;align-items:center;margin-top:14px}
+
+    /* Footer */
+    footer{padding:28px 20px;border-top:1px solid var(--line);color:var(--muted);text-align:center;background:#fff}
+    .pill{display:inline-block;padding:6px 10px;border-radius:999px;background:#fff;border:1px solid var(--line)}
+    .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+    @media (max-width:640px){
+      .hero-card h2{font-size:1.6rem}
+      .bar{padding:12px 14px}
+      .nav a{margin-left:10px}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container bar">
+      <div class="brand">
+        <div class="brand-badge">FF</div>
+        <h1>FrischFix</h1>
+      </div>
+      <nav class="nav">
+        <a href="#profil">Mein Profil</a>
+        <a href="#warenkorb">Warenkorb (<span id="cart-count">0</span>)</a>
+      </nav>
+    </div>
+    <div class="hero">
+      <div class="hero-overlay">
+        <div class="hero-card">
+          <h2>Willkommen zurück, Markus!</h2>
+          <p>Dein Wocheneinkauf in Minuten, damit mehr Zeit für die Familie bleibt.</p>
+          <div class="search">
+            <label for="search" class="sr-only">Suche</label>
+            <input id="search" type="search" placeholder="Was steht auf deinem Einkaufszettel?" />
+            <button class="btn-secondary" id="use-last">Letzten Einkauf als Vorlage nutzen</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Produkte -->
+    <section id="produkte">
+      <!-- Obst & Gemüse -->
+      <h2 class="section-title">Obst &amp; Gemüse</h2>
+      <div class="product-grid" id="cat-obst">
+        <!-- Bio-Tomaten -->
+        <div class="card product-card" data-product-id="P101" data-name="Bio-Tomaten" data-price="2.99">
+          <img alt="Bio-Tomaten" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><rect width='200' height='200' fill='%23ffffff'/><circle cx='80' cy='110' r='40' fill='%23e63946'/><circle cx='125' cy='120' r='36' fill='%23d62828'/><rect x='100' y='62' width='6' height='18' rx='3' fill='%2328a745'/><polygon points='100,62 86,72 114,72' fill='%2328a745'/></svg>">
+          <h3>Bio-Tomaten</h3>
+          <div class="unit">2,99 € / 500g</div>
+          <div class="price">2,99 €</div>
+          <button class="btn add add-to-cart">+ In den Warenkorb</button>
+        </div>
+        <!-- Bananen -->
+        <div class="card product-card" data-product-id="P102" data-name="Bananen" data-price="1.89">
+          <img alt="Bananen" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><rect width='200' height='200' fill='%23ffffff'/><path d='M40 110c35 55 105 55 120 10 5-12-8-12-12-8-38 35-83 14-98-12-5-9-20 1-10 10z' fill='%23ffcf33' stroke='%23f2b900' stroke-width='3' /></svg>">
+          <h3>Bananen</h3>
+          <div class="unit">1,89 € / kg</div>
+          <div class="price">1,89 €</div>
+          <button class="btn add add-to-cart">+ In den Warenkorb</button>
+        </div>
+        <!-- Avocados -->
+        <div class="card product-card" data-product-id="P103" data-name="Avocados" data-price="1.29">
+          <img alt="Avocados" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><rect width='200' height='200' fill='%23ffffff'/><path d='M85 150c-28 0-40-23-40-43 0-30 26-47 49-47 32 0 61 27 61 59 0 20-16 31-33 31-15 0-23-7-37-0z' fill='%233a5f0b'/><circle cx='115' cy='116' r='20' fill='%238c5a2b'/></svg>">
+          <h3>Avocados</h3>
+          <div class="unit">1,29 € / Stk</div>
+          <div class="price">1,29 €</div>
+          <button class="btn add add-to-cart">+ In den Warenkorb</button>
+        </div>
+        <!-- Zitronen -->
+        <div class="card product-card" data-product-id="P104" data-name="Zitronen" data-price="0.89">
+          <img alt="Zitronen" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><rect width='200' height='200' fill='%23ffffff'/><ellipse cx='110' cy='110' rx='55' ry='38' fill='%23ffd43b' stroke='%23f2c200' stroke-width='3'/><circle cx='75' cy='95' r='10' fill='%23ffd43b'/></svg>">
+          <h3>Zitronen</h3>
+          <div class="unit">0,89 € / Stk</div>
+          <div class="price">0,89 €</div>
+          <button class="btn add add-to-cart">+ In den Warenkorb</button>
+        </div>
+      </div>
+
+      <!-- Milchprodukte & Eier -->
+      <h2 class="section-title">Milchprodukte &amp; Eier</h2>
+      <div class="product-grid" id="cat-milch">
+        <!-- Frische Vollmilch -->
+        <div class="card product-card" data-product-id="P201" data-name="Frische Vollmilch" data-price="1.49">
+          <img alt="Frische Vollmilch" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><rect width='200' height='200' fill='%23ffffff'/><rect x='70' y='40' width='60' height='120' rx='8' fill='%23f5f7fb' stroke='%23cfd6de'/><rect x='70' y='40' width='60' height='28' rx='6' fill='%23E60026'/><rect x='80' y='86' width='40' height='44' fill='%23e9f2ff'/></svg>">
+          <h3>Frische Vollmilch</h3>
+          <div class="unit">1,49 € / 1L</div>
+          <div class="price">1,49 €</div>
+          <button class="btn add add-to-cart">+ In den Warenkorb</button>
+        </div>
+        <!-- Gouda Käse -->
+        <div class="card product-card" data-product-id="P202" data-name="Gouda Käse" data-price="2.49">
+          <img alt="Gouda Käse" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><rect width='200' height='200' fill='%23ffffff'/><path d='M70 145c0-35 30-65 65-65h10v65H70z' fill='%23ffce54' stroke='%23f2b83a' stroke-width='3'/><circle cx='110' cy='120' r='5' fill='%23f2b83a'/><circle cx='125' cy='135' r='4' fill='%23f2b83a'/></svg>">
+          <h3>Gouda Käse</h3>
+          <div class="unit">2,49 € / 250g</div>
+          <div class="price">2,49 €</div>
+          <button class="btn add add-to-cart">+ In den Warenkorb</button>
+        </div>
+        <!-- Bio-Eier -->
+        <div class="card product-card" data-product-id="P203" data-name="Bio-Eier (6 Stk)" data-price="2.89">
+          <img alt="Bio-Eier (6 Stk)" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><rect width='200' height='200' fill='%23ffffff'/><rect x='50' y='120' width='100' height='30' rx='8' fill='%23c5d6b1'/><ellipse cx='70' cy='115' rx='18' ry='22' fill='%23f8efe3'/><ellipse cx='100' cy='115' rx='18' ry='22' fill='%23f8efe3'/><ellipse cx='130' cy='115' rx='18' ry='22' fill='%23f8efe3'/></svg>">
+          <h3>Bio-Eier (6 Stk)</h3>
+          <div class="unit">2,89 € / Packung</div>
+          <div class="price">2,89 €</div>
+          <button class="btn add add-to-cart">+ In den Warenkorb</button>
+        </div>
+        <!-- Naturjoghurt -->
+        <div class="card product-card" data-product-id="P204" data-name="Naturjoghurt" data-price="0.79">
+          <img alt="Naturjoghurt" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><rect width='200' height='200' fill='%23ffffff'/><rect x='68' y='70' width='64' height='90' rx='12' fill='%23f5f7fb' stroke='%23cfd6de'/><rect x='68' y='70' width='64' height='24' rx='10' fill='%23E60026'/><rect x='78' y='105' width='44' height='30' rx='6' fill='%23e9f2ff'/></svg>">
+          <h3>Naturjoghurt</h3>
+          <div class="unit">0,79 € / 500g</div>
+          <div class="price">0,79 €</div>
+          <button class="btn add add-to-cart">+ In den Warenkorb</button>
+        </div>
+      </div>
+
+      <!-- Brot & Backwaren -->
+      <h2 class="section-title">Brot &amp; Backwaren</h2>
+      <div class="product-grid" id="cat-brot">
+        <!-- Vollkornbrot -->
+        <div class="card product-card" data-product-id="P301" data-name="Vollkornbrot" data-price="3.49">
+          <img alt="Vollkornbrot" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><rect width='200' height='200' fill='%23ffffff'/><rect x='55' y='90' width='90' height='60' rx='12' fill='%238b5e3c'/><rect x='55' y='75' width='90' height='25' rx='12' fill='%23a06b43'/><circle cx='80' cy='110' r='2' fill='%23d9b38c'/><circle cx='100' cy='120' r='2' fill='%23d9b38c'/><circle cx='120' cy='110' r='2' fill='%23d9b38c'/></svg>">
+          <h3>Vollkornbrot</h3>
+          <div class="unit">3,49 € / Laib</div>
+          <div class="price">3,49 €</div>
+          <button class="btn add add-to-cart">+ In den Warenkorb</button>
+        </div>
+        <!-- Brötchen -->
+        <div class="card product-card" data-product-id="P302" data-name="Brötchen (6 Stk)" data-price="1.99">
+          <img alt="Brötchen (6 Stk)" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><rect width='200' height='200' fill='%23ffffff'/><ellipse cx='80' cy='110' rx='24' ry='18' fill='%23f0c27b'/><ellipse cx='120' cy='110' rx='24' ry='18' fill='%23f0c27b'/><path d='M65 110q15-10 30 0' stroke='%23d1a162' stroke-width='3' fill='none'/><path d='M105 110q15-10 30 0' stroke='%23d1a162' stroke-width='3' fill='none'/></svg>">
+          <h3>Brötchen (6 Stk)</h3>
+          <div class="unit">1,99 € / Packung</div>
+          <div class="price">1,99 €</div>
+          <button class="btn add add-to-cart">+ In den Warenkorb</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Warenkorb -->
+    <section id="warenkorb">
+      <h2 class="section-title">Dein Warenkorb</h2>
+      <table id="cart-table" class="table">
+        <thead>
+          <tr>
+            <th>Produkt</th>
+            <th style="width:160px">Menge</th>
+            <th>Preis</th>
+            <th>Aktion</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="cart-summary">
+        <strong>Gesamt: <span id="cart-total">0.00</span> €</strong>
+        <a class="btn" href="#checkout">Zur Kasse gehen</a>
+      </div>
+    </section>
+
+    <!-- Checkout -->
+    <section id="checkout">
+      <h2 class="section-title">Kasse</h2>
+      <form id="checkout-form" class="card" style="align-items:stretch;text-align:left">
+        <div>
+          <h3>Schritt 1: Lieferdetails bestätigen</h3>
+          <p><strong>Lieferadresse:</strong> Markus Mustermann, Musterstraße 1, 46045 Oberhausen</p>
+          <p><strong>Gewähltes Lieferfenster:</strong> Heute, 20:00 – 22:00 Uhr</p>
+          <a class="pill" href="#">Adresse oder Zeit ändern</a>
+        </div>
+        <hr style="border:none;border-top:1px solid var(--line);margin:12px 0" />
+        <div>
+          <h3>Schritt 2: Bezahlung abschließen</h3>
+          <p>Wähle deine bevorzugte Bezahlmethode:</p>
+          <div style="display:grid;gap:6px">
+            <label><input type="radio" id="paypal" name="payment" value="paypal" checked> PayPal</label>
+            <label><input type="radio" id="creditcard" name="payment" value="creditcard"> Kreditkarte</label>
+            <label><input type="radio" id="klarna" name="payment" value="klarna"> Klarna</label>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;margin-top:8px">
+          <button type="submit" class="btn">Jetzt kostenpflichtig bestellen</button>
+        </div>
+      </form>
+      <div id="order-confirmation" style="display:none;color:green;margin-top:12px;font-weight:700">Danke für Ihre Bestellung!</div>
+    </section>
+
+    <!-- Profil / Historie -->
+    <section id="profil">
+      <h2 class="section-title">Mein FrischFix – Bestellhistorie</h2>
+      <ul style="list-style:none;padding:0;margin:0;display:grid;gap:10px">
+        <li class="card" style="justify-content:space-between;flex-direction:row;align-items:center">
+          <div><strong>Bestellung #1011</strong> vom 15.10.2025 – 7 Artikel – 21,50 €</div>
+          <div style="display:flex;gap:8px">
+            <button class="btn-secondary">Als Vorlage nutzen</button>
+            <button class="btn" style="background:#6c757d">Problem melden</button>
+          </div>
+        </li>
+        <li class="card" style="justify-content:space-between;flex-direction:row;align-items:center">
+          <div><strong>Bestellung #1004</strong> vom 13.10.2025 – 12 Artikel – 33,10 €</div>
+          <div style="display:flex;gap:8px">
+            <button class="btn-secondary">Als Vorlage nutzen</button>
+            <button class="btn" style="background:#6c757d">Problem melden</button>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 FrischFix – Alle Rechte vorbehalten.</p>
+  </footer>
+
+  <script>
+    // Warenkorb-Simulation & Checkout (dein bestehendes Konzept – angepasst)
+    const cart = {}; // { productId: quantity }
+    const cartTableBody = document.querySelector('#cart-table tbody');
+    const cartTotalElement = document.getElementById('cart-total');
+    const cartCountElement = document.getElementById('cart-count');
+    const checkoutForm = document.getElementById('checkout-form');
+    const orderConfirmation = document.getElementById('order-confirmation');
+
+    // --- KORREKTE NGROK URL BELASSEN ---
+    const N8N_WEBHOOK_URL = 'https://rhematic-joselyn-nonburdensomely.ngrok-free.app';
+
+    // Add-to-cart Buttons
+    document.querySelectorAll('.add-to-cart').forEach(btn=>{
+      btn.addEventListener('click', e=>{
+        const card = e.target.closest('.product-card');
+        const productId = card.dataset.productId;
+        cart[productId] = (cart[productId] || 0) + 1;
+        updateCartView();
+        toast(`${card.dataset.name} hinzugefügt`);
+      });
+    });
+
+    // Mini-Toast
+    function toast(text){
+      const t=document.createElement('div');
+      t.textContent=text;
+      Object.assign(t.style,{
+        position:'fixed',left:'50%',bottom:'24px',transform:'translateX(-50%)',
+        background:'rgba(33,37,41,.95)',color:'#fff',padding:'10px 14px',borderRadius:'999px',
+        fontWeight:'700',boxShadow:'0 8px 20px rgba(0,0,0,.25)',zIndex:9999
+      });
+      document.body.appendChild(t);
+      setTimeout(()=>{t.style.transition='opacity .3s';t.style.opacity='0';},900);
+      setTimeout(()=>t.remove(),1300);
+    }
+
+    // Cart View
+    function updateCartView(){
+      cartTableBody.innerHTML='';
+      let total=0, count=0;
+
+      for(const productId in cart){
+        const quantity = cart[productId];
+        const productElement = document.querySelector(`.product-card[data-product-id="${productId}"]`);
+        const name = productElement ? productElement.dataset.name : `Produkt ${productId}`;
+        const price = productElement ? parseFloat(productElement.dataset.price) : 0;
+
+        const tr=document.createElement('tr');
+        tr.innerHTML = `
+          <td>${name}</td>
+          <td>
+            <button class="qty-btn" onclick="changeQuantity('${productId}',-1)">-</button>
+            <span style="display:inline-block;min-width:24px;text-align:center">${quantity}</span>
+            <button class="qty-btn" onclick="changeQuantity('${productId}',1)">+</button>
+          </td>
+          <td>${(price*quantity).toFixed(2)} €</td>
+          <td><a href="#" style="color:var(--primary)" onclick="removeFromCart('${productId}');return false;">Entfernen</a></td>
+        `;
+        cartTableBody.appendChild(tr);
+        total += price*quantity;
+        count += quantity;
+      }
+      cartTotalElement.textContent = total.toFixed(2);
+      cartCountElement.textContent = count;
+    }
+
+    // Global für inline onclick:
+    window.changeQuantity = function(productId, diff){
+      if(cart[productId]){
+        cart[productId]+=diff;
+        if(cart[productId]<=0) delete cart[productId];
+        updateCartView();
+      }
+    }
+    window.removeFromCart = function(productId){
+      delete cart[productId];
+      updateCartView();
+    }
+
+    // Checkout Submit -> n8n Webhook
+    checkoutForm.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      orderConfirmation.style.display='none';
+      const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+
+      const orderData = {
+        kunde:'Markus',
+        email:'markus@test.de',
+        payment:paymentMethod,
+        cart:cart,
+        total:parseFloat(cartTotalElement.textContent)
+      };
+
+      try{
+        const response = await fetch(N8N_WEBHOOK_URL,{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify(orderData),
+        });
+        if(response.ok){
+          const result = await response.json().catch(()=>({}));
+          orderConfirmation.textContent = `Danke für Ihre Bestellung! Status: ${result.nachricht || 'OK'}`;
+          orderConfirmation.style.color='green';
+          orderConfirmation.style.display='block';
+        }else{
+          orderConfirmation.textContent = 'Fehler bei der Bestellung.';
+          orderConfirmation.style.color='red';
+          orderConfirmation.style.display='block';
+        }
+      }catch(err){
+        orderConfirmation.textContent = 'Netzwerkfehler bei der Bestellung.';
+        orderConfirmation.style.color='red';
+        orderConfirmation.style.display='block';
+      }
+    });
+
+    // Produktsuche (Hero)
+    const searchInput = document.getElementById('search');
+    searchInput.addEventListener('input', ()=>{
+      const q = searchInput.value.trim().toLowerCase();
+      document.querySelectorAll('.product-card').forEach(card=>{
+        const name = card.dataset.name.toLowerCase();
+        card.style.display = name.includes(q) ? '' : 'none';
+      });
+    });
+
+    // „Letzten Einkauf als Vorlage nutzen“ – kleine Demo (füllt exemplarisch 1–2 Produkte)
+    document.getElementById('use-last').addEventListener('click', ()=>{
+      const presets = ['P101','P201']; // Tomaten + Milch
+      presets.forEach(id=>{ cart[id]=(cart[id]||0)+1; });
+      updateCartView();
+      toast('Vorlage geladen');
+    });
+
+    // Initial
+    updateCartView();
+  <script>
+    // Warenkorb-Simulation & Checkout (dein bestehendes Konzept – angepasst)
+    // ... andere Variablen und Funktionen ...
+
+    // --- KORREKTE NGROK URL HIER EINFÜGEN ---
+    const N8N_WEBHOOK_URL = 'https://rhematic-joselyn-nonburdensomely.ngrok-free.dev/webhook/dfd620e1-9776-4f67-8ebc-4619c946e2d6';'; // <--- DIESE ZEILE ANPASSEN!
+
+    // ... Rest des Skripts ...
+  </script>
+</body>
+</html>
